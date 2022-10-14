@@ -19,7 +19,7 @@
 # map2=subset(map2,map2@data$reg_name!="Mayotte")
 # save.image("C:/Users/GREFFIN Mackenson/Desktop/shinycarto/data/rdata.RData")
 
-load("www/.Rdata.RData")
+#load("www/.Rdata.RData")
 map_operation_validation=function(type_representation,var_num_ou_char_map_id,data,nb_quantiles){
   if(type_representation=="quantile"){a=class(try(leaflet::colorQuantile("viridis",data[[var_num_ou_char_map_id]],nb_quantiles)(data[[var_num_ou_char_map_id]]),T))}
   else if( type_representation=="bin"){a=class(try(leaflet::colorBin("viridis",data[[var_num_ou_char_map_id]],nb_quantiles)(data[[var_num_ou_char_map_id]]),T))}
