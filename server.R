@@ -1,11 +1,7 @@
 
 
 server= function(input, output,session) {
-  # MAP
-  
-  # observeEvent("",{
-  #   #load("www/map1.Rds")
-  #   load("www/map2.Rds")})
+
   n_initialize_map=reactiveVal(0)
   df_edit_colnames=reactiveVal()
   valeur_carte=reactiveValues(carte=list("Population départementale-INSEE 2018"=map1,"Population régionale-INSEE 2018"=map2),graphic_data=list(),style=NULL,minichart_=NULL,epaisseur_ligne=1,opacity=0.5,factor_pal=NULL,n_layer=2)
