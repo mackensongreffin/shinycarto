@@ -13,6 +13,9 @@ server= function(input, output,session) {
   
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  observe({shinyjs::toggle(id = "controls", time = 1, anim = TRUE, animType = "fade", condition = input$show_panel)})
+  
+  
   # choix de la couche à modifier
   choix_de_la_couche_=eventReactive("",{selectizeInput("choix_de_la_couche","Editer la couche",choices=names(valeur_carte$carte))})
   output$choix_de_la_couche=renderUI(choix_de_la_couche_())

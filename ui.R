@@ -9,6 +9,7 @@ library(raster)
 library(colourpicker)
 library(esquisse)
 library(shinythemes)
+library(shinyjs)
 
 
 
@@ -33,6 +34,7 @@ $(document).on("shiny:connected", function(){
 
 
 ui=bootstrapPage(
+  useShinyjs(),
   theme = shinytheme("flatly"),
   tags$head(
   tags$script(HTML(js)),
@@ -47,11 +49,13 @@ ui=bootstrapPage(
   tags$head(tags$style("#controls {-ms-overflow-style: none;scrollbar-width: none;}")),
   
   leaflet::leafletOutput("map"),
+  #fixedPanel(bottom = 10, left =60,style="opacity: 0.85",actionButton('plotBtn', 'Show Panel', "data-toggle"='collapse', "data-target"='#controls',style="opacity: .80;")),
+  fixedPanel(bottom = 10, left =60,style="opacity: 0.85",checkboxInput("show_panel", "Paramétrages", value = T, width = NULL)),
   
   absolutePanel(id = "controls",
                 class = "panel panel-default",
                 fixed = FALSE,
-                draggable = FALSE, top = 0, right = 0,
+                draggable = FALSE, top =0, right = 0,
                 width ="20%",
                 height = "100%",
                 style="opacity: 0.85;overflow-y: auto;",
