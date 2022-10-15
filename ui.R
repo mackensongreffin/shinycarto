@@ -36,10 +36,16 @@ ui=bootstrapPage(
   theme = shinytheme("flatly"),
   tags$head(
   tags$script(HTML(js)),
-  tags$style(HTML("#controls {-ms-overflow-style: none;scrollbar-width: none;}")),
-  tags$style(HTML("#controls {-ms-overflow-style: none;scrollbar-width: none;}")),
+  tags$style(HTML("#controls::-webkit-scrollbar {display: none;}")),
+  #tags$style(HTML("#controls {-ms-overflow-style: none;scrollbar-width: none;}")),
   tags$style(HTML("html,body {margin: 0; overflow: hidden;}"))),
   tags$style(HTML(".leaflet-touch .leaflet-control-layers-toggle {position:'bottomright'}")),
+  tags$head(tags$style(".leaflet-popup-content-wrapper {opacity:0.85;overflow-y:hidden;padding: 2px;border-radius: 3px;}")),
+  tags$head(tags$style(".leaflet-popup-scrolled {border-bottom: 0px solid #ddd; border-top: 0px solid #ddd;}")),
+  tags$head(tags$style(".leaflet-popup-scrolled::-webkit-scrollbar {display: none;}")),
+  tags$head(tags$style(".leaflet-popup-scrolled {-ms-overflow-style: none;scrollbar-width: none;}")),
+  tags$head(tags$style("#controls {-ms-overflow-style: none;scrollbar-width: none;}")),
+  
   leaflet::leafletOutput("map"),
   
   absolutePanel(id = "controls",
@@ -60,7 +66,11 @@ ui=bootstrapPage(
                   actionButton("dessiner_carte_id","Dessiner la carte",width="100%"),
                   actionButton("show_attribute_table_id","Voir la table d'attribut",width="100%"),
                   actionButton("edit_colnames_id","Editer le noms des champs",width="100%"),br(),
-                  br()),
+                  br(),
+                  checkboxInput("map_info", "Tooltip", value = T, width = NULL),
+                br()
+                
+                ),
            
          column(12,
                 style ="padding:15;margin:0;",

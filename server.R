@@ -103,7 +103,8 @@ server= function(input, output,session) {
   output$palette_carte=renderUI(palette_carte_())
 
   observeEvent(input$show_attribute_table_id,{
-    showModal(modalDialog(size="l",title=input$choix_de_la_couche,DT::renderDataTable(valeur_carte$carte[[input$choix_de_la_couche]]@data,rownames=F,options=list(scrollX = TRUE)),rownames= FALSE,footer = NULL,easyClose = T))})
+    index=which(colnames(valeur_carte$carte[[input$choix_de_la_couche]]@data)=="content")
+    showModal(modalDialog(size="l",title=input$choix_de_la_couche,DT::renderDataTable(valeur_carte$carte[[input$choix_de_la_couche]]@data[,-index],rownames=F,options=list(scrollX = TRUE)),rownames= FALSE,footer = NULL,easyClose = T))})
   
   
   #éditer le nom des champs d'une table d'attribut
@@ -303,6 +304,7 @@ server= function(input, output,session) {
   
   # mise a jour des polygones selectionnés de la première couche de la carte en fonction de l'endroit on on click sur la carte
   observeEvent(req(input$map_shape_click),{
+    if(!input$map_info){
     if(input$voir_la_selection){
       if( class(valeur_carte$carte[[input$choix_de_la_couche[1]]])[1]=="SpatialPolygonsDataFrame"){
         p= input$map_shape_click
@@ -318,7 +320,7 @@ server= function(input, output,session) {
                                                                                                                                             fillColor = "#FFFFFF",
                                                                                                                                             layerId = ~id,
                                                                                                                                             group="selected_shape",
-                                                                                                                                            highlightOptions = leaflet::highlightOptions(color = "#eded1f", weight = 4,bringToFront = T))}}
+                                                                                                                                            highlightOptions = leaflet::highlightOptions(color = "#eded1f", weight = 4,bringToFront = T))}}}
   })
   
   #affichier les polygones selectionnés en fonction de la première couche sur la carte
@@ -339,6 +341,7 @@ server= function(input, output,session) {
   
   # mise a jour des points selectionnés de la première couche de la carte en fonction de l'endroit on on click sur la carte
   observeEvent(req(input$map_marker_click),{
+    if(!input$map_info){
     if(input$voir_la_selection){
       if( class(valeur_carte$carte[[input$choix_de_la_couche[1]]])[1]=="SpatialPointsDataFrame"){
         p= input$map_marker_click
@@ -363,7 +366,7 @@ server= function(input, output,session) {
                                                                                                                                              group="selected_point",
                                                                                                                                              #clusterOptions = markerClusterOptio spiderLegPolylineOptions = list(weight = 1.5, color = "blue", opacity = 0.5))
                                                                                                                                              options = pathOptions())
-        }}}
+        }}}}
     
     
     

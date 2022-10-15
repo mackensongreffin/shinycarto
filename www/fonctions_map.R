@@ -19,7 +19,20 @@
 # map2=subset(map2,map2@data$reg_name!="Mayotte")
 # save.image("C:/Users/GREFFIN Mackenson/Desktop/shinycarto/data/rdata.RData")
 
-#load("www/.Rdata.RData")
+
+f_popups=function(data_row,column_names){
+  str=""
+  for(i in 1:length(column_names)){
+    str=paste0(str,"<b>",column_names[i]," : <b>",data_row[i],"<br>")
+  }
+  return(str)
+}
+
+# map1@data$content=f_popups(map1@data[1,],colnames(map1@data))
+# map2@data$content=f_popups(map2@data[1,],colnames(map2@data))
+
+a=apply(map1@data,1,f_popups,column_names=colnames(map1@data)  )
+
 map_operation_validation=function(type_representation,var_num_ou_char_map_id,data,nb_quantiles){
   if(type_representation=="quantile"){a=class(try(leaflet::colorQuantile("viridis",data[[var_num_ou_char_map_id]],nb_quantiles)(data[[var_num_ou_char_map_id]]),T))}
   else if( type_representation=="bin"){a=class(try(leaflet::colorBin("viridis",data[[var_num_ou_char_map_id]],nb_quantiles)(data[[var_num_ou_char_map_id]]),T))}
@@ -68,7 +81,10 @@ create_map_proxy=function(map,carte,nom_de_la_couche,type_representation,type_re
                 layerId = ~carte@data$id,
                 group=nom_de_la_couche,
                 fillColor = ~fillColor,
-                highlightOptions = leaflet::highlightOptions(color = "#444444", weight = 3,bringToFront = F))
+                popup = ~carte@data$content,
+                popupOptions=leaflet::popupOptions(maxHeight = 300,opacity = 0.95),
+                highlightOptions = leaflet::highlightOptions(color = "#444444", weight = 3,bringToFront = F))#%>%
+      #leaflet::addPopups(carte@data$long, carte@data$lat, "content",options = popupOptions(permanent=F,closeButton = TRUE,sticky = TRUE))
     
     if(etiquette!="aucune"){leaflet::leafletProxy("map")%>%leaflet::clearGroup(paste0("label",nom_de_la_couche))%>%leaflet::addCircleMarkers(carte@data$long, carte@data$lat,group=paste0("label",nom_de_la_couche), opacity = 0, fillOpacity = 0,label =  as.character(carte@data[,etiquette]),labelOptions = labelOptions(noHide = T, direction = 'top', textOnly = F,textsize = paste(taille_etiquette,"px",sep="")))}
     else{leaflet::leafletProxy("map")%>%leaflet::clearGroup(paste0("label",nom_de_la_couche))}
